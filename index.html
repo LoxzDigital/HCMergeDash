@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Chosen Palette: Energetic & Playful (#FF6B6B, #FFD166, #06D6A0, #118AB2, #073B4C) -->
+    <!-- Application Structure Plan: The SPA is designed as a comprehensive dashboard that tells a story in three main acts. First, "The Ecosystem Blueprint" establishes the firm's strategic advantage. Second, "The Five Pillars" details the actionable, value-add strategy. Finally, the "Data & Analytics" section provides a data-driven foundation for all the strategies, incorporating high-level market trends from a provided report and then drilling into proprietary deal data to show how the firm executes. This unified structure was chosen to present a clear, coherent narrative from strategy to execution, making it a powerful tool for internal and external communication. -->
+    <!-- Visualization & Content Choices: 
+        - Commoditization of Capital -> Goal: Inform -> Viz: Donut Chart -> Justification: Shows the composition of the crowded funding landscape, making the "commoditization" concept immediately clear. Library: Chart.js/Canvas.
+        - Ecosystem Components -> Goal: Organize -> Viz: Styled HTML Cards -> Justification: Clearly segments the three core pillars into digestible, visually distinct blocks. Method: HTML/CSS.
+        - Digital Hub Maturity -> Goal: Change/Organize -> Viz: Bar Chart & HTML Diagram -> Justification: The bar chart compares the value proposition of each maturity level, while the HTML diagram shows the progression. Library: Chart.js/Canvas & HTML/CSS.
+        - Pillar 1 (PaaS) -> Goal: Compare -> Viz: Radar Chart -> Justification: Effectively displays the multi-faceted value of a "Platform as a Service" model across different support areas. Library: Chart.js/Canvas.
+        - Pillar 2 (Content) -> Goal: Organize -> Viz: HTML Flow Diagram -> Justification: Visually represents the process of turning content into inbound deal flow, which is clearer than text alone. Method: HTML/CSS.
+        - Pillar 3 (Network) -> Goal: Compare -> Viz: Pie Chart -> Justification: Illustrates the proportional sources of deal flow, emphasizing the importance of the network. Library: Chart.js/Canvas.
+        - Pillar 4 (Sourcing) -> Goal: Compare -> Viz: HTML Diagram -> Justification: A simple visual metaphor to contrast a focused vs. generalist approach. Method: HTML/CSS.
+        - Pillar 5 (Studio) -> Goal: Organize -> Viz: HTML Flow Diagram -> Justification: Shows the proactive, step-by-step nature of the venture studio model. Method: HTML/CSS.
+        - Q2 Medtech Summary -> Goal: Inform -> Viz: Dynamic Stat Cards -> Justification: Presents key market metrics as high-impact, easily scannable numbers to give an immediate overview. Method: HTML/CSS.
+        - Medtech Sector Overview -> Goal: Compare -> Viz: Bar Chart -> Justification: A simple bar chart effectively compares the relative deal volume across key medtech sectors, providing an immediate snapshot of market trends from the provided report. Library: Chart.js/Canvas.
+        - VC & PE Activity -> Goal: Change -> Viz: Line Chart -> Justification: A line chart is ideal for showing trends over time, allowing the user to quickly see the change in deal volume from Q1 to Q2. Library: Chart.js/Canvas.
+        - Deal Flow & Valuation -> Goal: Relationships -> Viz: Scatter Plot -> Justification: The scatter plot visually demonstrates the strong positive correlation between a startup's funding ask and its pre-money valuation, providing a key analytical insight. Library: Chart.js/Canvas.
+        - Top 5 Investments -> Goal: Compare -> Viz: Bar Chart -> Justification: A simple bar chart effectively compares the ask amount of the top five companies, providing a clear visual ranking. Library: Chart.js/Canvas.
+        - KPIs -> Goal: Inform -> Viz: Dynamic Stat Cards -> Justification: Presents key operational metrics as high-impact, easily scannable numbers. Method: HTML/CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <title>Thinkpartners LLC: Pioneering Healthcare AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #1E293B;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 450px;
+            }
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #FF6B6B;
+            transform: translateY(-2px);
+        }
+        .info-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(200, 200, 200, 0.3);
+        }
+        .pillar-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(200, 200, 200, 0.3);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-slate-800">Thinkpartners LLC</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#problem" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">The Problem</a>
+                        <a href="#blueprint" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">The Blueprint</a>
+                        <a href="#pillars" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">The 5 Pillars</a>
+                        <a href="#analytics" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Data & Analytics</a>
+                        <a href="#metrics" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Success Metrics</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="problem" class="text-center mb-16 md:mb-24 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">The New Reality: Capital is a Commodity</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-8">In today's crowded healthcare AI venture landscape, a financial check is no longer a differentiator. The most sought-after firms have evolved beyond being capital providers to become indispensable strategic partners, offering value that money can't buy.</p>
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 grid md:grid-cols-2 gap-8 items-center">
+                <div class="chart-container">
+                    <canvas id="capitalCommoditizationChart"></canvas>
+                </div>
+                <div class="text-left">
+                    <h3 class="text-2xl font-bold mb-4">The Crowded Field</h3>
+                    <p class="text-slate-600 mb-6">The influx of capital from diverse sources—including corporate VCs and hedge funds—means founders have more funding options than ever. This chart illustrates the distribution of capital sources, highlighting why simply offering money is a losing strategy.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <h4 class="font-semibold text-slate-800">🧠 Intellectual Capital</h4>
+                            <p class="text-sm text-slate-500">Deep industry knowledge and strategic operational guidance.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <h4 class="font-semibold text-slate-800">🤝 Relationship Capital</h4>
+                            <p class="text-sm text-slate-500">Access to customers, partners, and premier talent.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="blueprint" class="mb-16 md:mb-24 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 text-center mb-10">The Ecosystem Blueprint</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-12 text-center">A modern VC firm must architect a self-sustaining ecosystem built on three interconnected pillars. This network becomes a powerful, self-reinforcing moat, where the value for every member increases as the community grows.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="text-5xl mb-4">👥</div>
+                    <h3 class="text-xl font-bold mb-2">Talent & Expertise Network</h3>
+                    <p class="text-slate-600">Provide founders access to a curated network of top-tier talent and seasoned experts, addressing the most critical factor for startup success: the team.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="text-5xl mb-4">🔗</div>
+                    <h3 class="text-xl font-bold mb-2">Strategic Partnerships</h3>
+                    <p class="text-slate-600">Connect portfolio companies with key health systems, corporate partners, and industry leaders to accelerate growth and unlock market access.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="text-5xl mb-4">🌐</div>
+                    <h3 class="text-xl font-bold mb-2">Community & Content Nexus</h3>
+                    <p class="text-slate-600">Build the connective tissue through exclusive forums, events, and proprietary content that fosters trust, collaboration, and peer-to-peer learning at scale.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="digital-core" class="mb-16 md:mb-24 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 text-center mb-10">The Digital Core: An Interactive Hub</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-12 text-center">A dedicated subdomain (e.g., `ai.thinkpartnersllc.com`) is a 24/7 engine for delivering scalable value. It evolves from a simple resource library into a proprietary platform offering tangible, on-demand operational support.</p>
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 grid md:grid-cols-2 gap-8 items-center">
+                 <div class="text-left">
+                    <h3 class="text-2xl font-bold mb-4">Digital Hub Maturity Model</h3>
+                    <p class="text-slate-600 mb-6">This model shows the progression of a digital platform. As the hub matures, its value proposition deepens, moving from passive information delivery to active, tech-enabled support that creates a powerful competitive advantage.</p>
+                    <div class="space-y-3">
+                        <div class="p-4 rounded-lg border-l-4 border-[#FFD166]">
+                            <h4 class="font-bold">Level 1: Foundational Resource Hub</h4>
+                            <p class="text-sm">Static library of articles, reports, and recommended tools.</p>
+                        </div>
+                        <div class="p-4 rounded-lg border-l-4 border-[#06D6A0]">
+                            <h4 class="font-bold">Level 2: Interactive Community Hub</h4>
+                            <p class="text-sm">Private forums, webinars, and curated perks for portfolio companies.</p>
+                        </div>
+                        <div class="p-4 rounded-lg border-l-4 border-[#118AB2]">
+                            <h4 class="font-bold">Level 3: Proprietary Platform (PaaS)</h4>
+                            <p class="text-sm">Custom AI-powered tools for talent, market analysis, and competitive intelligence.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="digitalHubMaturityChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="pillars" class="mb-16 md:mb-24 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 text-center mb-12">The Five Pillars for Attracting Premier Deal Flow</h2>
+            <div class="space-y-12">
+                
+                <div class="pillar-card rounded-xl p-6 md:p-8 grid md:grid-cols-2 gap-8 items-center">
+                    <div class="order-2 md:order-1">
+                        <h3 class="text-2xl font-bold text-[#FF6B6B] mb-3">Pillar 1: The "Platform as a Service" Model</h3>
+                        <p class="text-slate-600">Offer tangible, operational support that goes far beyond capital. By providing hands-on help with talent, business development, and strategy, the firm becomes an indispensable partner in growth. This chart shows the impact of key platform services.</p>
+                    </div>
+                    <div class="order-1 md:order-2 chart-container">
+                        <canvas id="platformServicesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="pillar-card rounded-xl p-6 md:p-8 grid md:grid-cols-2 gap-8 items-center">
+                    <div class="chart-container">
+                        <div class="bg-slate-50 p-4 rounded-lg h-full flex flex-col justify-center">
+                            <h4 class="font-semibold mb-3 text-center text-slate-800">The Inbound Funnel</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="text-center p-2 bg-white rounded shadow-sm">📢 Publish High-Value Content</div>
+                                <div class="text-center text-2xl text-slate-400">▼</div>
+                                <div class="text-center p-2 bg-white rounded shadow-sm">🤝 Build Trust & Authority</div>
+                                <div class="text-center text-2xl text-slate-400">▼</div>
+                                <div class="text-center p-2 bg-white rounded shadow-sm">📥 Receive Warm Inbound Inquiries</div>
+                                <div class="text-center text-2xl text-slate-400">▼</div>
+                                <div class="text-center p-2 bg-green-100 text-green-800 rounded shadow-sm font-bold">📈 Higher Quality Deal Flow</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#FFD166] mb-3">Pillar 2: Content-Driven Thought Leadership</h3>
+                        <p class="text-slate-600">Establish the firm as the preeminent expert in its chosen niche. High-quality content acts as a magnet, attracting top founders and creating a scalable, inbound deal-sourcing mechanism that is far more efficient than cold outreach.</p>
+                    </div>
+                </div>
+
+                <div class="pillar-card rounded-xl p-6 md:p-8 grid md:grid-cols-2 gap-8 items-center">
+                    <div class="order-2 md:order-1">
+                        <h3 class="text-2xl font-bold text-[#06D6A0] mb-3">Pillar 3: The Connected Network</h3>
+                        <p class="text-slate-600">Transform the firm's network from a static contact list into a dynamic, actively managed asset. By systematically nurturing relationships with "super-connectors," the firm can create a continuous and high-quality deal origination process.</p>
+                    </div>
+                    <div class="order-1 md:order-2 chart-container">
+                        <canvas id="dealSourcingChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="pillar-card rounded-xl p-6 md:p-8 grid md:grid-cols-2 gap-8 items-center">
+                     <div class="chart-container">
+                        <div class="relative h-full flex items-center justify-center">
+                            <div class="absolute w-48 h-48 bg-blue-100 rounded-full flex items-center justify-center text-center p-4 text-blue-800 font-semibold">Generalist VC<br/><span class="text-xs font-normal">(Broad but shallow)</span></div>
+                            <div class="absolute w-32 h-32 bg-blue-500 rounded-full flex items-center justify-center text-center p-4 text-white font-bold shadow-2xl">Specialist VC<br/><span class="text-xs font-normal">(Deep expertise)</span></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#118AB2] mb-3">Pillar 4: Precision Sourcing & Niche Dominance</h3>
+                        <p class="text-slate-600">Become the undisputed expert in a specific high-growth vertical, like Healthcare AI. This deep focus signals to founders that the firm uniquely understands their challenges, making it a far more attractive partner than a generalist fund.</p>
+                    </div>
+                </div>
+
+                <div class="pillar-card rounded-xl p-6 md:p-8 grid md:grid-cols-2 gap-8 items-center">
+                    <div class="order-2 md:order-1">
+                        <h3 class="text-2xl font-bold text-[#073B4C] mb-3">Pillar 5: The "Venture Studio" Approach</h3>
+                        <p class="text-slate-600">The ultimate commitment: move from passive investor to active co-founder. By proactively identifying problems and building companies from the ground up, the firm de-risks innovation and captures the most nascent, groundbreaking ideas.</p>
+                    </div>
+                    <div class="order-1 md:order-2 chart-container">
+                        <div class="h-full flex flex-col justify-center items-center space-y-4">
+                             <div class="text-center p-4 bg-white rounded-lg shadow-md w-full">
+                                <div class="text-4xl mb-2">💡</div>
+                                <p class="font-semibold">Proactive Ideation</p>
+                            </div>
+                            <div class="text-2xl font-bold text-slate-400">→</div>
+                             <div class="text-center p-4 bg-white rounded-lg shadow-md w-full">
+                                <div class="text-4xl mb-2">🚀</div>
+                                <p class="font-semibold">Co-Found & Build</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="analytics" class="mb-16 md:mb-24 scroll-mt-20">
+             <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 text-center mb-10">Data & Analytics: Sourcing Insights</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-12 text-center">In a data-driven investment climate, the ability to analyze market trends and identify high-potential opportunities is a key advantage. Here are insights drawn directly from market data and our proprietary analysis.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="info-card rounded-xl p-8 text-center border-b-4 border-[#FF6B6B]">
+                    <h3 class="text-xl font-semibold mb-2">Total Deals (Q2)</h3>
+                    <p class="text-5xl font-extrabold text-[#FF6B6B] mb-2">1,210</p>
+                    <p class="text-slate-600">Consistent deal flow compared to Q1 2025.</p>
+                </div>
+                <div class="info-card rounded-xl p-8 text-center border-b-4 border-[#06D6A0]">
+                    <h3 class="text-xl font-semibold mb-2">Average Deal Size</h3>
+                    <p class="text-5xl font-extrabold text-[#06D6A0] mb-2">$32M</p>
+                    <p class="text-slate-600">Reflecting a flight to quality and mature deals.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h3 class="text-2xl font-bold mb-4">Medtech Sector Overview</h3>
+                    <p class="text-slate-600 mb-6">Based on recent market analysis, venture and private equity activity in medtech is concentrated in several key areas. This chart provides a snapshot of the relative deal volume across the top five sectors.</p>
+                    <div class="chart-container">
+                        <canvas id="medtechSectorsChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h3 class="text-2xl font-bold mb-4">Quarterly Medtech Deal Volume</h3>
+                    <p class="text-slate-600 mb-6">The line chart below illustrates the trend in the number of venture capital and private equity deals from Q1 to Q2 2025.</p>
+                    <div class="chart-container">
+                        <canvas id="dealVolumeChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 md:col-span-2">
+                    <h3 class="text-2xl font-bold mb-4">Correlation: Ask vs. Valuation</h3>
+                    <p class="text-slate-600 mb-6">A powerful positive correlation of 0.96 exists between a company's "Ask Amount" and its estimated "Pre-Money Valuation." This visualization shows that for this data set, a higher ask is consistently tied to a higher valuation, a key metric for deal analysis.</p>
+                    <div class="chart-container">
+                        <canvas id="askValuationChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 md:col-span-2">
+                    <h3 class="text-2xl font-bold mb-4">Top 5 Term Sheet Predictions</h3>
+                    <p class="text-slate-600 mb-6">These companies represent the highest-potential opportunities based on our predictive analysis, with their pre-money valuations indicating strong market and investor confidence. They are prime targets for investment.</p>
+                    <div class="chart-container">
+                        <canvas id="topCompaniesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="metrics" class="scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 text-center mb-10">Measuring Success</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-12 text-center">The success of this ecosystem model is measured not just by financial returns, but by the strength of the community and the tangible value delivered to founders. These KPIs provide a holistic view of the platform's impact.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center border-b-4 border-[#FF6B6B]">
+                    <h3 class="text-xl font-semibold mb-2">Founder NPS</h3>
+                    <p class="text-5xl font-extrabold text-[#FF6B6B] mb-2">75+</p>
+                    <p class="text-slate-600">Measuring portfolio founder satisfaction and loyalty.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center border-b-4 border-[#06D6A0]">
+                    <h3 class="text-xl font-semibold mb-2">Platform Engagement</h3>
+                    <p class="text-5xl font-extrabold text-[#06D6A0] mb-2">80%</p>
+                    <p class="text-slate-600">Monthly active users within the private community hub.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center border-b-4 border-[#118AB2]">
+                    <h3 class="text-xl font-semibold mb-2">Ecosystem-Sourced Deals</h3>
+                    <p class="text-5xl font-extrabold text-[#118AB2] mb-2">40%</p>
+                    <p class="text-slate-600">Percentage of high-quality deals originating from the ecosystem.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 mt-16">
+        <div class="container mx-auto py-6 px-4 text-center text-sm">
+            <p>&copy; 2025 Thinkpartners LLC | Architecting the Future of Healthcare AI.</p>
+        </div>
+    </footer>
+
+    <script>
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            if (!item) return '';
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const processLabels = (labels) => {
+            const MAX_LENGTH = 16;
+            return labels.map(label => {
+                if (typeof label !== 'string' || label.length <= MAX_LENGTH) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + ' ' + word).trim().length > MAX_LENGTH && currentLine.length > 0) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                });
+                if (currentLine) {
+                    lines.push(currentLine.trim());
+                }
+                return lines.length > 0 ? lines : [label];
+            });
+        };
+
+        const palette = ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2', '#073B4C'];
+
+        new Chart(document.getElementById('capitalCommoditizationChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Traditional VCs', 'Corporate VCs', 'Hedge Funds', 'Angel Investors', 'Accelerators'],
+                datasets: [{
+                    data: [45, 25, 15, 10, 5],
+                    backgroundColor: palette,
+                    borderColor: '#F8F9FA',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { title: tooltipTitleCallback } } },
+                cutout: '60%'
+            }
+        });
+
+        new Chart(document.getElementById('digitalHubMaturityChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Level 1: Foundational', 'Level 2: Interactive', 'Level 3: Proprietary'],
+                datasets: [{
+                    label: 'Value to Founder',
+                    data: [30, 65, 100],
+                    backgroundColor: ['#FFD166', '#06D6A0', '#118AB2'],
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                plugins: { legend: { display: false }, title: { display: true, text: 'Value Proposition Growth' }, tooltip: { callbacks: { title: tooltipTitleCallback } } },
+                scales: { x: { beginAtZero: true, grid: { display: false }, ticks: { callback: (value) => value + '%' } }, y: { grid: { display: false } } }
+            }
+        });
+
+        new Chart(document.getElementById('platformServicesChart').getContext('2d'), {
+            type: 'radar',
+            data: {
+                labels: processLabels(['Talent Acquisition', 'Expert Advisory', 'Corporate Intros', 'Fundraising Support', 'Operational Playbooks']),
+                datasets: [{
+                    label: 'Platform Impact Score',
+                    data: [90, 85, 95, 75, 80],
+                    backgroundColor: 'rgba(255, 107, 107, 0.2)',
+                    borderColor: '#FF6B6B',
+                    pointBackgroundColor: '#FF6B6B',
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { callbacks: { title: tooltipTitleCallback } } },
+                scales: { r: { suggestedMin: 0, suggestedMax: 100, pointLabels: { font: { size: 10 } } } }
+            }
+        });
+
+        new Chart(document.getElementById('dealSourcingChart').getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: processLabels(['Warm Inbound (Network)', 'Founder Referrals', 'Content Sourced', 'Cold Outreach']),
+                datasets: [{
+                    data: [55, 20, 15, 10],
+                    backgroundColor: ['#06D6A0', '#118AB2', '#FFD166', '#FF6B6B'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' }, title: { display: true, text: 'Deal Sourcing Channels' }, tooltip: { callbacks: { title: tooltipTitleCallback } } }
+            }
+        });
+
+        const askValuationData = [
+            { company: "Hellocare.ai", ask: 50000000, valuation: 180000000 },
+            { company: "Quibim", ask: 10000000, valuation: 65000000 },
+            { company: "Mandolin", ask: 30000000, valuation: 120000000 },
+            { company: "Qualified Health", ask: 20000000, valuation: 90000000 },
+            { company: "Charta Health", ask: 10000000, valuation: 40000000 },
+            { company: "Ignota Labs", ask: 8000000, valuation: 35000000 }
+        ];
+
+        new Chart(document.getElementById('askValuationChart').getContext('2d'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Ask Amount vs. Valuation',
+                    data: askValuationData.map(d => ({ x: d.ask, y: d.valuation })),
+                    backgroundColor: '#FF6B6B',
+                    borderColor: '#FF6B6B',
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const dataIndex = context.dataIndex;
+                                const company = askValuationData[dataIndex].company;
+                                const ask = context.parsed.x;
+                                const valuation = context.parsed.y;
+                                return `Company: ${company}, Ask: $${ask.toLocaleString()}, Valuation: $${valuation.toLocaleString()}`;
+                            },
+                            title: () => null
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Ask Amount ($)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return `$${(value / 1000000).toFixed(0)}M`;
+                            }
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Valuation ($)'
+                        },
+                         ticks: {
+                            callback: function(value) {
+                                return `$${(value / 1000000).toFixed(0)}M`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const topCompaniesData = [
+            { company: 'Hellocare.ai', ask: 50000000 },
+            { company: 'Mandolin', ask: 30000000 },
+            { company: 'Qualified Health', ask: 20000000 },
+            { company: 'Charta Health', ask: 10000000 },
+            { company: 'Ignota Labs', ask: 8000000 }
+        ];
+
+        new Chart(document.getElementById('topCompaniesChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: topCompaniesData.map(d => d.company),
+                datasets: [{
+                    label: 'Ask Amount',
+                    data: topCompaniesData.map(d => d.ask),
+                    backgroundColor: '#06D6A0',
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                             label: function(context) {
+                                const value = context.parsed.y;
+                                return `Ask: $${value.toLocaleString()}`;
+                            },
+                             title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Ask Amount ($)' },
+                        ticks: {
+                            callback: function(value) {
+                                return `$${(value / 1000000).toFixed(0)}M`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        const medtechSectorsData = {
+            labels: processLabels(['Remote monitoring & portable care', 'Diagnostics & life sciences', 'Surgical devices & tools', 'Nonsurgical medical treatments', 'Medical imaging']),
+            datasets: [{
+                label: 'Relative Investment Activity',
+                data: [35, 25, 15, 15, 10],
+                backgroundColor: ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2', '#073B4C'],
+                borderRadius: 5,
+            }]
+        };
+
+        new Chart(document.getElementById('medtechSectorsChart').getContext('2d'), {
+            type: 'bar',
+            data: medtechSectorsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Relative Deal Volume (%)' },
+                        ticks: {
+                            callback: function(value) { return value + '%'; }
+                        }
+                    }
+                }
+            }
+        });
+
+        const dealVolumeData = {
+            labels: ['Q1 2025', 'Q2 2025'],
+            datasets: [{
+                label: 'Medtech VC Deals',
+                data: [1150, 1210],
+                backgroundColor: '#118AB2',
+                borderColor: '#118AB2',
+                pointBackgroundColor: '#073B4C',
+                pointRadius: 6,
+                tension: 0.4,
+                fill: false
+            }]
+        };
+
+        new Chart(document.getElementById('dealVolumeChart').getContext('2d'), {
+            type: 'line',
+            data: dealVolumeData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                         callbacks: { title: tooltipTitleCallback }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Number of Deals' }
+                    }
+                }
+            }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+            sections.forEach(sec => observer.observe(sec));
+
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
